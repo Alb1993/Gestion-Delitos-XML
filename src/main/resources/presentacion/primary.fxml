@@ -20,7 +20,7 @@
       <Button fx:id="btnSearch" layoutX="504.0" layoutY="28.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="88.0" text="Buscar" />
       <Button fx:id="btnDoc" layoutX="504.0" layoutY="202.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="191.0" text="Generar Informe " />
       <Button fx:id="btnExport" layoutX="504.0" layoutY="147.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="191.0" text="Exportar" />
-      <Button fx:id="btnImport" layoutX="504.0" layoutY="90.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="191.0" text="Importar" />
+      <Button fx:id="btnImport" layoutX="504.0" layoutY="90.0" mnemonicParsing="false" onAction="#onClick_importar" prefHeight="39.0" prefWidth="191.0" text="Importar" />
       <ToggleButton fx:id="btnSwitch" layoutX="515.0" layoutY="252.0" mnemonicParsing="false" text="Switch" />
    </children>
 </AnchorPane>
