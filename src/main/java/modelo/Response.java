@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Clase que prrepresnta la raiz del archivo XML
+ * Clase que representa la raiz del archivo XML.
  * @author andre
  */
 
@@ -23,7 +23,7 @@ public class Response {
     public Response() {
     }
     
-    //indicamon que este arraylist representa un elemento que contiene elementos y especifiamos que elemnto del XML representa
+    //indicamos que este arraylist representa un elemento que contiene elementos y especifiamos que elemnto del XML representa
     @XmlElementWrapper(name="row")
     //indicamos el nombre de los elementos que contiene el wrapper
     @XmlElement(name="row")

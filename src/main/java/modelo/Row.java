@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- *Clase que represnta el elemento row del archivo XML
+ *Clase que representa el elemento row del archivo XML.
  * @author andre
  */
 

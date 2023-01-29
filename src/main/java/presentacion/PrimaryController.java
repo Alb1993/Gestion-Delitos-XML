@@ -54,27 +54,43 @@ public class PrimaryController implements Initializable {
     void onClick_importar(ActionEvent event) {
        
         try {
-            //carrgamos los delitos
+            /***
+             *  Cargamos los delitos.
+             */
             idl.caregarDelitos();
-            //una vez cargados los delitos los obtenemos y añadimos el array delitos
+            /***
+             * Una vez cargados los delitos los obtenemos y añadimos el array delitos.
+             */          
             delitos.addAll(idl.getDelitos());
         } catch (JAXBException ex) {
             System.out.println("error");
-        }
-        
-         for (int i = 0; i < 5; i++) {
-            System.out.println(delitos.get(i).toString());
         }
         
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //iniciamos una nueva instancia de la clase ImportarDatosLogic
+        /***
+         * Iniciamos una nueva instancia de la clase ImportarDatosLogic.
+         */
         idl = new ImportarDatosLogic();
         //iniciamos  el array de delitos
         delitos = new ArrayList();
          
+    }
+    
+    /***
+     * Función ejecutada por el botón de Busqueda que devolverá un ArrayList filtrado según el texto escrito.
+     * 
+     * @param event
+     * @throws JAXBException 
+     */
+    @FXML
+    void onClick_Search(ActionEvent event) throws JAXBException {
+        String searchString = txtSearch.getText().toLowerCase();
+        ArrayList<Row> delitosBuscados = ImportarDatosLogic.buscarDelitos(searchString);
+    
+
     }
     
 }

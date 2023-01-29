@@ -20,12 +20,7 @@ public class DelitosDAO {
     
      public static ArrayList<Row> importarDatos() throws JAXBException{
         
-        //creamos una nueva instancia JAXBContext para la clase Response que representa la estructira del archivo XML
-        JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
-        //creamos un objeto Unmarshaller
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        //utilizamos el metodo unmarshal del objeto unmarshaller para convertir el archivo XML en un objeto de la clase Response
-        Response myObject = (Response) unmarshaller.unmarshal(new File("C:\\Users\\andre\\Downloads\\delitos.xml")); 
+        Response myObject = DataSource.getResponse();
         //obtemos la lista de los delitos del objeto myObject
         ArrayList<Row> delitos = myObject.getRow();
         
@@ -33,6 +28,35 @@ public class DelitosDAO {
         return delitos;
      
      }
-    
+     
+    /***
+     * Función que filtrará el ArrayList de delitos segun si el String busqueda tiene texto o no.
+     * 
+     * @param busqueda
+     * @return
+     * @throws JAXBException 
+     */
+    public static ArrayList<Row> buscarDatos(String busqueda) throws JAXBException{
+        ArrayList<Row> delitosBuscados = new ArrayList<Row>();
+        Response myObject = DataSource.getResponse();
+        //obtemos la lista de los delitos del objeto myObject
+        ArrayList<Row> delitos = myObject.getRow();
+        /***
+         * Si busqueda esta vacio, la funcion devolvera la lista de delitos completa.
+         */
+        if(busqueda.isEmpty()){
+            delitosBuscados=delitos;
+        }else{
+            /***
+             * Si busqueda contiene un String, la funcion devolvera los delitos que coincidan con el tipo de delito.
+             */
+            for(int i=0; i<delitos.size(); i++){
+                if(delitos.get(i).getTipusdelicte().toLowerCase().contains(busqueda)){
+                    delitosBuscados.add(delitos.get(i));
+                }
+            }
+        }
+        return delitosBuscados;
+    }
     
 }
