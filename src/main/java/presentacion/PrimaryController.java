@@ -11,12 +11,17 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -33,6 +38,8 @@ import modelo.Row;
  */
 public class PrimaryController implements Initializable {
     
+    private ObservableList<Row> listaObservabledelitos;
+    
     private ImportarDatosLogic idl;  
     
     private ArrayList<Row> delitos;
@@ -42,6 +49,12 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private Button btnExport;
+    
+    @FXML
+    private TableView tabladelitos;
+    
+    @FXML 
+    private TableColumn codigosentencia, comisionhechos, articulopenal, tipodlito, grupodelito, sexo, comunidadautonoma;
 
     @FXML
     private ToggleButton btnSwitch;
@@ -58,14 +71,12 @@ public class PrimaryController implements Initializable {
      @FXML
     void onClick_importar(ActionEvent event) {
         try {    
-                /***
-                 *  Cargamos los delitos.
-                 */
+                //Cargamos los delitos.
                 idl.caregarDelitos();
-                /***
-                 * Una vez cargados los delitos los obtenemos y añadimos el array delitos.
-                 */          
+                // Una vez cargados los delitos los obtenemos y añadimos el array delitos.       
                 delitos.addAll(idl.getDelitos());
+                //y carrgamos los delitos en la lista observable para que se miestren los elementos en el tableview
+                listaObservabledelitos.setAll(delitos);
                 Notificaciones.mostrarConfirmacion("El archivo se ha cargado con exito.");
         } catch (JAXBException ex) {
             Notificaciones.mostrarError("Formato de archivo no valido.");
@@ -80,6 +91,18 @@ public class PrimaryController implements Initializable {
         idl = new ImportarDatosLogic();
         //iniciamos  el array de delitos
         delitos = new ArrayList();
+         //iniciamos la lista observable con la que mostrara los delitos 
+        listaObservabledelitos = FXCollections.<Row>observableArrayList();
+        //indicamos que los elementos que se mostrara son de la lista listaObservabledelitos 
+        tabladelitos.setItems(listaObservabledelitos);
+        //asignamos las columnas de la tabla con .los atributos del objeto Row que mostraran 
+        codigosentencia.setCellValueFactory(new PropertyValueFactory<>("Codisentencia"));
+        comisionhechos.setCellValueFactory(new PropertyValueFactory<>("Comissiofets"));
+        articulopenal.setCellValueFactory(new PropertyValueFactory<>("Articlecodipenal"));
+        tipodlito.setCellValueFactory(new PropertyValueFactory<>("Tipusdelicte"));
+        grupodelito.setCellValueFactory(new PropertyValueFactory<>("Grupdelicte"));      
+        sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
+        comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
          
     }
     
