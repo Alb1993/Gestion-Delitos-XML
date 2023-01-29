@@ -35,14 +35,14 @@ public class ImportarDatosLogic {
         return this.delitos;
     }
     
-    /***
-     * Funcion para cargar los Delitos y mostrarlos en el Array.
-     * 
-     * @throws JAXBException 
-     */
-    public void caregarDelitos() throws JAXBException{
+     /***
+      * Funcion para cargar los delitos desde un archivo CSV.
+      * @param archivo
+      * @throws JAXBException 
+      */
+    public void caregarDelitos(File archivo) throws JAXBException{
         //cargamos los delitos en el array 
-        this.delitos.addAll(DelitosDAO.importarDatos());
+        this.delitos.addAll(DelitosDAO.importarDatos(archivo));
            
     }
     
@@ -53,9 +53,17 @@ public class ImportarDatosLogic {
      * @return
      * @throws JAXBException 
      */
-    public static ArrayList<Row> buscarDelitos(String busqueda) throws JAXBException{
-    ArrayList<Row> delitosBuscados = DelitosDAO.buscarDatos(busqueda);
-    return delitosBuscados;
+    public static ArrayList<Row> buscarDelitos(String busqueda, ArrayList<Row> delitos) throws JAXBException{
+        ArrayList<Row> delitosBuscados = DelitosDAO.buscarDatos(busqueda, delitos);
+        return delitosBuscados;
+    }
+    
+    /***
+     * Funcion que generara un archivo CSV.
+     * @param delitos 
+     */
+    public static void generarCSV(ArrayList<Row> delitos){
+        DelitosDAO.generarCSV(delitos);
     }
     
 }

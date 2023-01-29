@@ -5,12 +5,18 @@
 package datos;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import com.opencsv.CSVWriter;
+import java.io.IOException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 import modelo.Response;
 import modelo.Row;
+import org.apache.commons.csv.CSVFormat;
 
 /**
  *
@@ -18,9 +24,13 @@ import modelo.Row;
  */
 public class DelitosDAO {
     
-     public static ArrayList<Row> importarDatos() throws JAXBException{
-        
-        Response myObject = DataSource.getResponse();
+     public static ArrayList<Row> importarDatos(File archivo) throws JAXBException{
+        //creamos una nueva instancia JAXBContext para la clase Response que representa la estructira del archivo XML
+        JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
+        //creamos un objeto Unmarshaller
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        //utilizamos el metodo unmarshal del objeto unmarshaller para convertir el archivo XML en un objeto de la clase Response      
+        Response myObject = (Response) unmarshaller.unmarshal(archivo); 
         //obtemos la lista de los delitos del objeto myObject
         ArrayList<Row> delitos = myObject.getRow();
         
@@ -36,11 +46,9 @@ public class DelitosDAO {
      * @return
      * @throws JAXBException 
      */
-    public static ArrayList<Row> buscarDatos(String busqueda) throws JAXBException{
+    public static ArrayList<Row> buscarDatos(String busqueda, ArrayList<Row> delitos) throws JAXBException{
         ArrayList<Row> delitosBuscados = new ArrayList<Row>();
-        Response myObject = DataSource.getResponse();
         //obtemos la lista de los delitos del objeto myObject
-        ArrayList<Row> delitos = myObject.getRow();
         /***
          * Si busqueda esta vacio, la funcion devolvera la lista de delitos completa.
          */
@@ -58,5 +66,40 @@ public class DelitosDAO {
         }
         return delitosBuscados;
     }
+    
+    public static void generarCSV(ArrayList<Row> data) {
+        String separador = ";";
+        try (FileWriter writer = new FileWriter("C:\\Users\\Albert\\Desktop\\data.csv");
+             CSVWriter csvWriter = new CSVWriter(writer, separador.charAt(0))) {
+            for (Row row : data) {
+                String[] record = {row.getArticlecodipenal(), 
+                    row.getCodicomunitatautonoma(), 
+                    row.getCodigrupdelicte(),
+                    row.getCodisentencia(),
+                    row.getCoditipusdelicte(),
+                    row.getComissiofets(),
+                    row.getComunitatautonoma(),
+                    row.getGrupdelicte(),
+                    row.getNumerojutjat(),
+                    row.getSexe(),
+                    row.getTipusdelicte()};
+                csvWriter.writeNext(record);
+            }
+            System.out.println("El archivo CSV se ha generado exitosamente!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+        
+    public static void generarXML(ArrayList<Row> data) throws PropertyException, JAXBException {
+
+        JAXBContext context = JAXBContext.newInstance(Row.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.marshal(data, new File("C\\Users\\Albert\\Desktop\\rows.xml"));
+        
+    }
+       
     
 }

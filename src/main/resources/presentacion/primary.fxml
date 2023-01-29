@@ -18,8 +18,8 @@
       </TableView>
       <TextField fx:id="txtSearch" layoutX="55.0" layoutY="28.0" prefHeight="39.0" prefWidth="428.0" />
       <Button fx:id="btnSearch" layoutX="557.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClick_Search" prefHeight="39.0" prefWidth="250.0" text="BUSCAR" />
-      <Button fx:id="btnDoc" layoutX="557.0" layoutY="281.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="GENERAR INFORME" />
-      <Button fx:id="btnExport" layoutX="557.0" layoutY="193.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="EXPORTAR" />
+      <Button fx:id="btnDoc" layoutX="557.0" layoutY="281.0" mnemonicParsing="false" onAction="#gen_Informe" prefHeight="39.0" prefWidth="250.0" text="GENERAR INFORME" />
+      <Button fx:id="btnExport" layoutX="557.0" layoutY="193.0" mnemonicParsing="false" onAction="#exportarCSV" prefHeight="39.0" prefWidth="250.0" text="EXPORTAR" />
       <Button fx:id="btnImport" layoutX="557.0" layoutY="110.0" mnemonicParsing="false" onAction="#onClick_importar" prefHeight="39.0" prefWidth="250.0" text="IMPORTAR" />
       <ToggleButton fx:id="btnSwitch" layoutX="557.0" layoutY="371.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Switch" />
    </children>

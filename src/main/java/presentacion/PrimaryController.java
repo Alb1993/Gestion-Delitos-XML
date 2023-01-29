@@ -5,6 +5,7 @@
 package presentacion;
 
 import aplicacion.ImportarDatosLogic;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -18,6 +19,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBException;
 import modelo.Row;
 
@@ -54,16 +59,19 @@ public class PrimaryController implements Initializable {
     void onClick_importar(ActionEvent event) {
        
         try {
-            /***
-             *  Cargamos los delitos.
-             */
-            idl.caregarDelitos();
-            /***
-             * Una vez cargados los delitos los obtenemos y añadimos el array delitos.
-             */          
-            delitos.addAll(idl.getDelitos());
+            
+            File archivo = cargarArchivo();
+                /***
+                 *  Cargamos los delitos.
+                 */
+                idl.caregarDelitos(archivo);
+                /***
+                 * Una vez cargados los delitos los obtenemos y añadimos el array delitos.
+                 */          
+                delitos.addAll(idl.getDelitos());
+                Notificaciones.mostrarConfirmacion("El archivo se ha cargado con exito.");
         } catch (JAXBException ex) {
-            System.out.println("error");
+            Notificaciones.mostrarError("Formato de archivo no valido.");
         }
         
     }
@@ -88,9 +96,30 @@ public class PrimaryController implements Initializable {
     @FXML
     void onClick_Search(ActionEvent event) throws JAXBException {
         String searchString = txtSearch.getText().toLowerCase();
-        ArrayList<Row> delitosBuscados = ImportarDatosLogic.buscarDelitos(searchString);
+        delitos = ImportarDatosLogic.buscarDelitos(searchString, delitos);
+    }
     
-
+    @FXML
+    void exportarCSV(ActionEvent event) {
+        ImportarDatosLogic.generarCSV(delitos);
+    }
+    
+    
+    
+    @FXML
+    void gen_Informe(ActionEvent event) {
+       
+    }
+    
+    public static File cargarArchivo(){
+        Stage stage1 = new Stage();
+        FileChooser filechooser1 = new FileChooser();
+        FileFilter imageFilter = new FileNameExtensionFilter("Archivo XML", "xml");
+        filechooser1.setTitle("Selecciona archivo XML");
+        File archivo = filechooser1.showOpenDialog(stage1);
+        
+        
+        return archivo;
     }
     
 }
