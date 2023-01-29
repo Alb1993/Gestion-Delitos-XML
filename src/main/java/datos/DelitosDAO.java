@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import com.opencsv.CSVWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -17,6 +18,8 @@ import javax.xml.bind.Unmarshaller;
 import modelo.Response;
 import modelo.Row;
 import org.apache.commons.csv.CSVFormat;
+import presentacion.App;
+import presentacion.Notificaciones;
 
 /**
  *
@@ -24,13 +27,14 @@ import org.apache.commons.csv.CSVFormat;
  */
 public class DelitosDAO {
     
-     public static ArrayList<Row> importarDatos(File archivo) throws JAXBException{
+     public static ArrayList<Row> importarDatos() throws JAXBException{
+        File file = new File(App.class.getResource("/xml/delitos.xml").getFile());
         //creamos una nueva instancia JAXBContext para la clase Response que representa la estructira del archivo XML
         JAXBContext jaxbContext = JAXBContext.newInstance(Response.class);
         //creamos un objeto Unmarshaller
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         //utilizamos el metodo unmarshal del objeto unmarshaller para convertir el archivo XML en un objeto de la clase Response      
-        Response myObject = (Response) unmarshaller.unmarshal(archivo); 
+        Response myObject = (Response) unmarshaller.unmarshal(file); 
         //obtemos la lista de los delitos del objeto myObject
         ArrayList<Row> delitos = myObject.getRow();
         
@@ -67,9 +71,9 @@ public class DelitosDAO {
         return delitosBuscados;
     }
     
-    public static void generarCSV(ArrayList<Row> data) {
+    public static void generarCSV(ArrayList<Row> data, File archivo) {
         String separador = ";";
-        try (FileWriter writer = new FileWriter("C:\\Users\\Albert\\Desktop\\data.csv");
+        try (FileWriter writer = new FileWriter(archivo.getAbsolutePath());
              CSVWriter csvWriter = new CSVWriter(writer, separador.charAt(0))) {
             for (Row row : data) {
                 String[] record = {row.getArticlecodipenal(), 
@@ -85,7 +89,8 @@ public class DelitosDAO {
                     row.getTipusdelicte()};
                 csvWriter.writeNext(record);
             }
-            System.out.println("El archivo CSV se ha generado exitosamente!");
+            
+            Notificaciones.mostrarConfirmacion("El archivo CSV se ha generado exitosamente!");
         } catch (IOException e) {
             e.printStackTrace();
         }

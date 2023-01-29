@@ -57,14 +57,11 @@ public class PrimaryController implements Initializable {
     
      @FXML
     void onClick_importar(ActionEvent event) {
-       
-        try {
-            
-            File archivo = cargarArchivo();
+        try {    
                 /***
                  *  Cargamos los delitos.
                  */
-                idl.caregarDelitos(archivo);
+                idl.caregarDelitos();
                 /***
                  * Una vez cargados los delitos los obtenemos y añadimos el array delitos.
                  */          
@@ -73,7 +70,6 @@ public class PrimaryController implements Initializable {
         } catch (JAXBException ex) {
             Notificaciones.mostrarError("Formato de archivo no valido.");
         }
-        
     }
 
     @Override
@@ -101,7 +97,8 @@ public class PrimaryController implements Initializable {
     
     @FXML
     void exportarCSV(ActionEvent event) {
-        ImportarDatosLogic.generarCSV(delitos);
+        File archivo = crearArchivo();
+        ImportarDatosLogic.generarCSV(delitos, archivo);
     }
     
     
@@ -111,13 +108,12 @@ public class PrimaryController implements Initializable {
        
     }
     
-    public static File cargarArchivo(){
+    public static File crearArchivo(){
         Stage stage1 = new Stage();
         FileChooser filechooser1 = new FileChooser();
-        FileFilter imageFilter = new FileNameExtensionFilter("Archivo XML", "xml");
-        filechooser1.setTitle("Selecciona archivo XML");
-        File archivo = filechooser1.showOpenDialog(stage1);
-        
+        FileFilter imageFilter = new FileNameExtensionFilter("Archivo CSV", "csv");
+        filechooser1.setTitle("Crear Archivo CSV");
+        File archivo = filechooser1.showSaveDialog(stage1);
         
         return archivo;
     }

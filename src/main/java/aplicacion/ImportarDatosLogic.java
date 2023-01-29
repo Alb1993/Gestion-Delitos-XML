@@ -40,9 +40,9 @@ public class ImportarDatosLogic {
       * @param archivo
       * @throws JAXBException 
       */
-    public void caregarDelitos(File archivo) throws JAXBException{
+    public void caregarDelitos() throws JAXBException{
         //cargamos los delitos en el array 
-        this.delitos.addAll(DelitosDAO.importarDatos(archivo));
+        this.delitos.addAll(DelitosDAO.importarDatos());
            
     }
     
@@ -62,8 +62,8 @@ public class ImportarDatosLogic {
      * Funcion que generara un archivo CSV.
      * @param delitos 
      */
-    public static void generarCSV(ArrayList<Row> delitos){
-        DelitosDAO.generarCSV(delitos);
+    public static void generarCSV(ArrayList<Row> delitos, File archivo){
+        DelitosDAO.generarCSV(delitos, archivo);
     }
     
 }
