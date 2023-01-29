@@ -97,13 +97,15 @@ public class DelitosDAO {
     }
     
         
-    public static void generarXML(ArrayList<Row> data) throws PropertyException, JAXBException {
+    public static void generarXML(ArrayList<Row> data, File archivo) throws PropertyException, JAXBException {
 
         JAXBContext context = JAXBContext.newInstance(Row.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(data, new File("C\\Users\\Albert\\Desktop\\rows.xml"));
-        
+        for(int i=0; i<data.size(); i++){
+            marshaller.marshal(data.get(i), archivo);
+        }
+        Notificaciones.mostrarConfirmacion("El archivo XML se ha generado exitosamente!");
     }
        
     

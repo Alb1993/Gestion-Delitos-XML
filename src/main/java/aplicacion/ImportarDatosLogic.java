@@ -7,13 +7,8 @@ package aplicacion;
 import datos.DelitosDAO;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
 import javax.xml.bind.JAXBException;
 import modelo.Row;
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
 
 /**
  *
@@ -29,15 +24,16 @@ public class ImportarDatosLogic {
         delitos =  new ArrayList();
     }
     
-    
+    /***
+     * Funcion que devolverá un ArrayList de delitos.
+     * @return 
+     */
      public ArrayList<Row> getDelitos() {
-        //devolvemos el array delitos
         return this.delitos;
     }
     
      /***
       * Funcion para cargar los delitos desde un archivo CSV.
-      * @param archivo
       * @throws JAXBException 
       */
     public void caregarDelitos() throws JAXBException{
@@ -60,10 +56,15 @@ public class ImportarDatosLogic {
     
     /***
      * Funcion que generara un archivo CSV.
-     * @param delitos 
+     * @param delitos
+     * @param archivo 
      */
     public static void generarCSV(ArrayList<Row> delitos, File archivo){
         DelitosDAO.generarCSV(delitos, archivo);
+    }
+    
+    public static void generarXML(ArrayList<Row> delitos, File archivo) throws JAXBException{
+        DelitosDAO.generarXML(delitos, archivo);
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -29,7 +30,9 @@ public class Row {
    private String numerojutjat;
    private String codicomunitatautonoma;
    private String comunitatautonoma;
-
+   
+   private ArrayList<Row> rows;
+   
     public Row() {
     }
 
