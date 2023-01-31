@@ -6,6 +6,7 @@ package presentacion;
 
 import aplicacion.ImportarDatosLogic;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -15,7 +16,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -132,7 +136,23 @@ public class PrimaryController implements Initializable {
 
     @FXML
     void gen_Informe(ActionEvent event) {
-
+           
+           FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml")); 
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException | IllegalStateException ex) {           
+            System.out.println("fff");
+        }
+        
+        InformesController  informesController = fxmlLoader.getController();
+        informesController.setDelitos(delitos);
+        
+           
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
     }
 
     public static File crearArchivo() {

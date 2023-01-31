@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="681.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.InformesController">
+     <children>
+      <Label fx:id="tituloinforme1" layoutX="65.0" layoutY="50.0" prefHeight="31.0" prefWidth="515.0" text="Titulo del informe 1" />
+      <Label fx:id="descripcioninforme1" layoutX="65.0" layoutY="114.0" prefHeight="31.0" prefWidth="498.0" text="Descripción del informe" />
+      <Button fx:id="exportarinforme1" layoutX="473.0" layoutY="185.0" mnemonicParsing="false" onAction="#onClick_exportar1" text="Exportar...." />
+      <Separator layoutX="-1.0" layoutY="254.0" prefHeight="8.0" prefWidth="600.0" />
+      <Label fx:id="tituloinforme2" layoutX="65.0" layoutY="285.0" prefHeight="31.0" prefWidth="498.0" text="Titulo del informe2" />
+      <Label fx:id="descripcioninforme2" layoutX="65.0" layoutY="329.0" prefHeight="24.0" prefWidth="492.0" text="Descripción del informe" />
+      <Button fx:id="exportarinforme2" layoutX="473.0" layoutY="409.0" mnemonicParsing="false" onAction="#onClick_exportar2" text="Exportar...." />
+      <Separator layoutY="480.0" prefHeight="8.0" prefWidth="600.0" />
+      <Label fx:id="tituloinforme3" layoutX="65.0" layoutY="499.0" prefHeight="24.0" prefWidth="498.0" text="Titulo del informe3" />
+      <Label fx:id="descripcioninforme3" layoutX="65.0" layoutY="543.0" prefHeight="24.0" prefWidth="498.0" text="Descripción del informe" />
+      <Button fx:id="exportarinforme3" layoutX="473.0" layoutY="597.0" mnemonicParsing="false" onAction="#onClick_exportar3" text="Exportar...." />
+   </children>
+</AnchorPane>
