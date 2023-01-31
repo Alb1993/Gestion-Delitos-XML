@@ -31,17 +31,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBException;
 import modelo.Row;
 
-
 /**
  *
  * @author Albert
  */
 public class PrimaryController implements Initializable {
-    
+
     private ObservableList<Row> listaObservabledelitos;
-    
-    private ImportarDatosLogic idl;  
-    
+
+    private ImportarDatosLogic idl;
+
     private ArrayList<Row> delitos;
 
     @FXML
@@ -49,11 +48,11 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private Button btnExport;
-    
+
     @FXML
     private TableView tabladelitos;
-    
-    @FXML 
+
+    @FXML
     private TableColumn codigosentencia, comisionhechos, articulopenal, tipodlito, grupodelito, sexo, comunidadautonoma;
 
     @FXML
@@ -67,17 +66,17 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private Button btnImport;
-    
-     @FXML
+
+    @FXML
     void onClick_importar(ActionEvent event) {
-        try {    
-                //Cargamos los delitos.
-                idl.caregarDelitos();
-                // Una vez cargados los delitos los obtenemos y añadimos el array delitos.       
-                delitos.addAll(idl.getDelitos());
-                //y carrgamos los delitos en la lista observable para que se miestren los elementos en el tableview
-                listaObservabledelitos.setAll(delitos);
-                Notificaciones.mostrarConfirmacion("El archivo se ha cargado con exito.");
+        try {
+            //Cargamos los delitos.
+            idl.caregarDelitos();
+            // Una vez cargados los delitos los obtenemos y añadimos el array delitos.       
+            delitos.addAll(idl.getDelitos());
+            //y carrgamos los delitos en la lista observable para que se miestren los elementos en el tableview
+            listaObservabledelitos.setAll(delitos);
+            Notificaciones.mostrarConfirmacion("El archivo se ha cargado con exito.");
         } catch (JAXBException ex) {
             Notificaciones.mostrarError("Formato de archivo no valido.");
         }
@@ -85,13 +84,14 @@ public class PrimaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /***
+        /**
+         *
          * Iniciamos una nueva instancia de la clase ImportarDatosLogic.
          */
         idl = new ImportarDatosLogic();
         //iniciamos  el array de delitos
         delitos = new ArrayList();
-         //iniciamos la lista observable con la que mostrara los delitos 
+        //iniciamos la lista observable con la que mostrara los delitos 
         listaObservabledelitos = FXCollections.<Row>observableArrayList();
         //indicamos que los elementos que se mostrara son de la lista listaObservabledelitos 
         tabladelitos.setItems(listaObservabledelitos);
@@ -100,46 +100,60 @@ public class PrimaryController implements Initializable {
         comisionhechos.setCellValueFactory(new PropertyValueFactory<>("Comissiofets"));
         articulopenal.setCellValueFactory(new PropertyValueFactory<>("Articlecodipenal"));
         tipodlito.setCellValueFactory(new PropertyValueFactory<>("Tipusdelicte"));
-        grupodelito.setCellValueFactory(new PropertyValueFactory<>("Grupdelicte"));      
+        grupodelito.setCellValueFactory(new PropertyValueFactory<>("Grupdelicte"));
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
-         
+
     }
-    
-    /***
-     * Función ejecutada por el botón de Busqueda que devolverá un ArrayList filtrado según el texto escrito.
-     * 
+
+    /**
+     *
+     * Función ejecutada por el botón de Busqueda que devolverá un ArrayList
+     * filtrado según el texto escrito.
+     *
      * @param event
-     * @throws JAXBException 
+     * @throws JAXBException
      */
     @FXML
     void onClick_Search(ActionEvent event) throws JAXBException {
         String searchString = txtSearch.getText().toLowerCase();
         delitos = ImportarDatosLogic.buscarDelitos(searchString, delitos);
     }
-    
+
     @FXML
     void exportarCSV(ActionEvent event) {
-        File archivo = crearArchivo();
-        ImportarDatosLogic.generarCSV(delitos, archivo);
+        //if (!cifradoActivado()) {
+            File archivo = crearArchivo();
+            ImportarDatosLogic.generarCSV(delitos, archivo);
+        //} else {
+            
+        //}
     }
-    
-    
-    
+
     @FXML
     void gen_Informe(ActionEvent event) {
-       
+
     }
-    
-    public static File crearArchivo(){
+
+    public static File crearArchivo() {
         Stage stage1 = new Stage();
         FileChooser filechooser1 = new FileChooser();
         FileFilter imageFilter = new FileNameExtensionFilter("Archivo CSV", "csv");
         filechooser1.setTitle("Crear Archivo CSV");
         File archivo = filechooser1.showSaveDialog(stage1);
-        
+
         return archivo;
     }
-    
-}
 
+    public boolean cifradoActivado() {
+
+        boolean cifradoActivado = false;
+
+        if (btnSwitch.isPressed()) {
+            cifradoActivado = true;
+        }
+
+        return cifradoActivado;
+    }
+
+}
