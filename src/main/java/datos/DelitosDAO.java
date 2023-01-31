@@ -107,6 +107,6 @@ public class DelitosDAO {
         }
         Notificaciones.mostrarConfirmacion("El archivo XML se ha generado exitosamente!");
     }
-       
+      
     
 }
