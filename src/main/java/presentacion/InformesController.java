@@ -30,17 +30,17 @@ import modelo.Row;
  * @author andre
  */
 public class InformesController implements Initializable {
-    
+
     private ArrayList<Row> delitos;
-    
+
     private InformesLogic il;
-    
+
     private Informe informe1;
-    
+
     private Informe informe2;
-    
+
     private Informe informe3;
-    
+
     @FXML
     private Label tituloinforme3;
 
@@ -67,30 +67,49 @@ public class InformesController implements Initializable {
 
     @FXML
     private Label descripcioninforme2;
-    
-     @FXML
+
+    @FXML
     void onClick_exportar1(ActionEvent event) {
-           
+
         File archivo = exportarInforme();
-          
+
         try {
             il.crearInforme(archivo, informe1);
+            Notificaciones.mostrarConfirmacion("El archivo se ha creado con exito.");
         } catch (IOException ex) {
             Logger.getLogger(InformesController.class.getName()).log(Level.SEVERE, null, ex);
         }
-          
+
     }
 
     @FXML
     void onClick_exportar2(ActionEvent event) {
+        
+         File archivo = exportarInforme();
+
+        try {
+            il.crearInforme(archivo, informe2);
+            Notificaciones.mostrarConfirmacion("El archivo se ha creado con exito.");
+        } catch (IOException ex) {
+            Logger.getLogger(InformesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
     @FXML
     void onClick_exportar3(ActionEvent event) {
+        
+         File archivo = exportarInforme();
+
+        try {
+            il.crearInforme(archivo, informe3);
+            Notificaciones.mostrarConfirmacion("El archivo se ha creado con exito.");
+        } catch (IOException ex) {
+            Logger.getLogger(InformesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
-    
+
     /**
      * Initializes the controller class.
      */
@@ -101,48 +120,69 @@ public class InformesController implements Initializable {
         informe1 = new Informe();
         informe2 = new Informe();
         informe3 = new Informe();
-    } 
-    
-    public static File exportarInforme(){
+        tituloinforme1.setWrapText(true);
+        tituloinforme2.setWrapText(true);
+        tituloinforme3.setWrapText(true);
+        descripcioninforme1.setWrapText(true);
+        descripcioninforme2.setWrapText(true);
+        descripcioninforme3.setWrapText(true);
+        tituloinforme1.setText("Cuantos delitos de tipo 'Robatori amb violència o intimidació' se han cometido en el año 2022 en las Islas Baleares");
+        tituloinforme2.setText("Cuantos delitos del grupo de delitos 'De les lesions' se han cometido durante el año 2021 en las Islas Baleares por hombres");
+        tituloinforme3.setText("Cuantos delitos del grupo de delitos 'Delictes contra el patrimoni i contra l'ordre socioeconòmic' se han cometido durante el año 2020");
+        
+    }
+
+    public static File exportarInforme() {
         Stage stage = new Stage();
         FileChooser filechooser = new FileChooser();
         filechooser.setTitle("Exportar informe");
         File archivo = filechooser.showSaveDialog(stage);
-        
+
         return archivo;
-    
+
     }
-    
+
     public void setDelitos(ArrayList<Row> delitos) {
         this.delitos.addAll(delitos);
-        cargarInforme1();
-        cargarInforme2();
-        cargarInforme3();
-       
+        if (!this.delitos.isEmpty()) {
+            cargarInforme1();
+            cargarInforme2();
+            cargarInforme3();
+        }else{
+             Notificaciones.mostrarError("No se ha podido recuperar los datos de  los delitos");
+             String error = "No se ha podido recuperar los datos de  los delitos";
+             descripcioninforme1.setText(error);
+             descripcioninforme2.setText(error);
+             descripcioninforme3.setText(error);
+             
+             exportarinforme2.setDisable(true);
+             exportarinforme1.setDisable(true);
+             exportarinforme3.setDisable(true);
+
+             
+        }
+
     }
 
     private void cargarInforme1() {
-        
+
         informe1 = il.cargarInforme1(delitos);
-       
-        tituloinforme1.setText(informe1.getTitulo());
+
         descripcioninforme1.setText(informe1.getInfromacion());
-       
+
     }
 
     private void cargarInforme2() {
-        
+
         informe2 = il.cargarInforme2(delitos);
-       
-        tituloinforme2.setText(informe2.getTitulo());
+
         descripcioninforme2.setText(informe2.getInfromacion());
     }
 
     private void cargarInforme3() {
-       informe3 = il.cargarInforme3(delitos);
-       
-        tituloinforme3.setText(informe3.getTitulo());
+        informe3 = il.cargarInforme3(delitos);
+
         descripcioninforme3.setText(informe3.getInfromacion());
     }
-    
+
 }

@@ -34,6 +34,7 @@ public class Row {
    private ArrayList<Row> rows;
    
     public Row() {
+        this.sexe = "X";
     }
 
     public String getCodisentencia() {
