@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
+import modelo.DelitosWrapper;
 import modelo.Response;
 import modelo.Row;
 import org.apache.commons.csv.CSVFormat;
@@ -98,13 +99,11 @@ public class DelitosDAO {
     
         
     public static void generarXML(ArrayList<Row> data, File archivo) throws PropertyException, JAXBException {
-
-        JAXBContext context = JAXBContext.newInstance(Row.class);
+        DelitosWrapper wrapper = new DelitosWrapper(data);
+        JAXBContext context = JAXBContext.newInstance(DelitosWrapper.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        for(int i=0; i<data.size(); i++){
-            marshaller.marshal(data.get(i), archivo);
-        }
+        marshaller.marshal(wrapper, archivo); 
         Notificaciones.mostrarConfirmacion("El archivo XML se ha generado exitosamente!");
     }
       

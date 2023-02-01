@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1432.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.PrimaryController">
    <children>
-       <TableView fx:id="tabladelitos" layoutX="55.0" layoutY="90.0" prefHeight="323.0" prefWidth="969.0">
+       <TableView fx:id="tabladelitos" layoutX="55.0" layoutY="90.0" prefHeight="406.0" prefWidth="969.0">
         <columns>
           <TableColumn fx:id="codigosentencia" prefWidth="130.0" text="Codigo sentencia" />
           <TableColumn fx:id="comisionhechos" minWidth="0.0" prefWidth="128.0" text="Comision hechos" />
@@ -24,7 +24,7 @@
         </columns>
       </TableView>
       <TextField fx:id="txtSearch" layoutX="55.0" layoutY="28.0" prefHeight="39.0" prefWidth="969.0" />
-      <Button fx:id="btnSearch" layoutX="1070.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClick_Search" prefHeight="39.0" prefWidth="250.0" text="BUSCAR" />
+      <Button fx:id="btnSearch" layoutX="1070.0" layoutY="28.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="BUSCAR" />
       <Button fx:id="btnDoc" layoutX="1070.0" layoutY="326.0" mnemonicParsing="false" onAction="#gen_Informe" prefHeight="39.0" prefWidth="250.0" text="GENERAR INFORME" />
       <RadioButton fx:id="radioCSV" layoutX="1219.0" layoutY="181.0" mnemonicParsing="false" onAction="#onClick_CSV" text="CSV" />
       <RadioButton fx:id="radioXML" layoutX="1100.0" layoutY="181.0" mnemonicParsing="false" onAction="#onClick_XML" text="XML" />

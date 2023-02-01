@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.filechooser.FileFilter;
@@ -48,6 +50,8 @@ public class PrimaryController implements Initializable {
     private ImportarDatosLogic idl;
 
     private ArrayList<Row> delitos;
+
+    private ArrayList<Row> filteredData;
 
     @FXML
     private Button btnSearch;
@@ -126,51 +130,64 @@ public class PrimaryController implements Initializable {
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
 
+        
+        /***
+         * Listener que filtrará los datos en funcion del texto escrito.
+         */    
+        txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (!delitos.isEmpty()) {
+                String searchString = txtSearch.getText().toLowerCase();
+
+                txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                    filteredData = (ArrayList<Row>) delitos.stream()
+                            .filter((Row data) -> data.getTipusdelicte().toLowerCase().contains(newValue.toLowerCase()))
+                            .collect(Collectors.toList());
+                    listaObservabledelitos.clear();
+                    listaObservabledelitos.setAll(filteredData);
+                    tabladelitos.refresh();
+                });
+            }
+        });           
     }
 
     /**
-     *
-     * Función ejecutada por el botón de Busqueda que devolverá un ArrayList
-     * filtrado según el texto escrito.
+     * *
+     * Accion Realizada al pulsar boton Exportar.
      *
      * @param event
      * @throws JAXBException
      */
     @FXML
-    void onClick_Search(ActionEvent event) throws JAXBException {
-        String searchString = txtSearch.getText().toLowerCase();
-        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            ArrayList<Row> filteredData = (ArrayList<Row>) delitos.stream()
-                    .filter(data -> data.getTipusdelicte().contains(newValue))
-                    .collect(Collectors.toList());
-            listaObservabledelitos.clear();
-            listaObservabledelitos.setAll(filteredData);
-            tabladelitos.refresh();
-        });
-
-        //delitos = ImportarDatosLogic.buscarDelitos(searchString, delitos);
-    }
-
-    @FXML
     void exportarCSV(ActionEvent event) throws JAXBException {
         //if (!cifradoActivado()) {
-        if (delitos.size() == 0) {
+        if (delitos.isEmpty()) {
             Notificaciones.mostrarError("Debes importar el documento para exportar datos.");
         } else {
-            if (radioXML.isSelected()) {
-                File archivo = crearArchivo();
-                ImportarDatosLogic.generarXML(delitos, archivo);
-            } else if (radioCSV.isSelected()) {
-                File archivo = crearArchivo();
-                ImportarDatosLogic.generarCSV(delitos, archivo);
+            if (filteredData.isEmpty()) {
+                filteredData.addAll(delitos);
+                cargarDoc();
             } else {
-                Notificaciones.mostrarError("Selecciona una opcion para importar");
-
+                cargarDoc();
             }
-
         }
-        //} else {
-        //}
+    }
+
+    /**
+     * *
+     * Funcion para cargar Documento XML o CSV
+     *
+     * @throws JAXBException
+     */
+    void cargarDoc() throws JAXBException {
+        if (radioXML.isSelected()) {
+            File archivo = crearArchivo();
+            ImportarDatosLogic.generarXML(filteredData, archivo);
+        } else if (radioCSV.isSelected()) {
+            File archivo = crearArchivo();
+            ImportarDatosLogic.generarCSV(filteredData, archivo);
+        } else {
+            Notificaciones.mostrarError("Selecciona una opcion para importar");
+        }
     }
 
     @FXML
@@ -193,6 +210,12 @@ public class PrimaryController implements Initializable {
         stage.show();
     }
 
+    /**
+     * *
+     * Funcion que devuelve un objeto File a traves de un FileChooser.
+     *
+     * @return
+     */
     public static File crearArchivo() {
         Stage stage1 = new Stage();
         FileChooser filechooser1 = new FileChooser();
