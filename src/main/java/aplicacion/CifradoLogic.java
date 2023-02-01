@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * @version 1.0
  * @author FPShare
- * 
+ *
  * Clase para almacenar las funciones de cifrado y descifrado de la aplicación
  */
 public class CifradoLogic {
@@ -21,19 +21,30 @@ public class CifradoLogic {
      * @param contraseña
      * @return
      */
-    public static String cifrarInforme(StringBuilder text, int contraseña) {
+    public static StringBuilder cifrarInforme(StringBuilder text, int contraseña) {
 
-        // Creamos un array con los caracteres
-        char[] chars = text.toString().toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
             if (Character.isLowerCase(c)) {
-                chars[i] = (char) ('z' - (c - 'a') - contraseña);
+                text.setCharAt(i, (char) ('z' - (c - 'a') + contraseña));
             } else if (Character.isUpperCase(c)) {
-                chars[i] = (char) ('Z' - (c - 'A') - contraseña);
+                text.setCharAt(i, (char) ('Z' - (c - 'A') + contraseña));
             }
         }
-        return new String(chars);
+        return text;
+    }
+
+    public static StringBuilder descifrarInforme(StringBuilder text, int contraseña) {
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isLowerCase(c)) {
+                text.setCharAt(i, (char) ('a' - ('z' - c) + contraseña));
+            } else if (Character.isUpperCase(c)) {
+                text.setCharAt(i, (char) ('A' - ('Z' - c) + contraseña));
+            }
+        }
+        return text;
     }
 
     /**
@@ -43,9 +54,8 @@ public class CifradoLogic {
      * @param contraseña
      * @return
      */
-    public static String fileToString(String fileName, String contraseña) {
+    public static StringBuilder fileToString(String fileName, String contraseña) {
         int contraseñaLong = contraseña.length();
-        
         StringBuilder content = new StringBuilder();
         File file = new File(fileName);
         try (Scanner scanner = new Scanner(file)) {
@@ -54,10 +64,10 @@ public class CifradoLogic {
                 content.append(System.lineSeparator());
             }
         } catch (FileNotFoundException e) {
-
+            System.out.println("Archivo no encontrado");
         }
-
         return cifrarInforme(content, contraseñaLong);
+
     }
 
     /**
@@ -66,11 +76,10 @@ public class CifradoLogic {
      *
      * @param content
      * @param fileName
-     * @param extension
      */
-    public static void stringToFile(String content, String fileName, String extension) {
-        try (FileWriter writer = new FileWriter(new File(fileName + extension))) {
-            writer.write(content);
+    public static void stringToFile(StringBuilder content, String fileName) {
+        try (FileWriter writer = new FileWriter(new File(fileName))) {
+            writer.write(content.toString());
         } catch (IOException e) {
 
         }
