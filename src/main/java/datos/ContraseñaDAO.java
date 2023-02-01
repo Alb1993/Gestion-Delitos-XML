@@ -1,37 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package datos;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * @version 1.0
  * @author FPShare
+ * 
+ * Clase para almacenar las funcionalidades de escritura de contraseña
  */
 public class ContraseñaDAO {
 
     /**
-     * Función para escribir contraseña para cifrar o descifrar el informe
+     * Función para detectar si la contraseña introducida cumple con los
+     * requisitos
      *
      * @param contraseña
      * @return
      * @throws Exception
      */
-    public String escrituraContraseña(String contraseña) throws Exception {
-        String matcherContraseña = "[^a-zA-Z]";
+    public static boolean escrituraContraseña(String contraseña) throws Exception {
+        boolean ret = false;
+        String matcherContraseña = "[^a-zA-Z0-9]{4,20}";
 
         Pattern pat = Pattern.compile(matcherContraseña);
         Matcher mat = pat.matcher(contraseña);
 
         if (mat.matches()) {
-
+            ret = true;
         } else {
-            throw new Exception("La contraseña no es valida");
+            throw new Exception("La contraseña no es valida, tiene que ser entre 4 y 20 caracteres");
         }
 
-        return contraseña;
+        return ret;
     }
 }

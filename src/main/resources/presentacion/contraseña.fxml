@@ -8,8 +8,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.ContraseñaController">
    <children>
-      <Button fx:id="btnGuardar" layoutX="157.0" layoutY="197.0" mnemonicParsing="false" onAction="#guardarContraseña" prefHeight="37.0" prefWidth="90.0" text="Guardar" />
-      <Button fx:id="btnCancelar" layoutX="250.0" layoutY="197.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="37.0" prefWidth="90.0" text="Cancelar" />
+      <Button fx:id="btnGuardar" layoutX="202.0" layoutY="199.0" mnemonicParsing="false" onAction="#guardarContraseña" prefHeight="37.0" prefWidth="90.0" text="Guardar" />
       <TextField fx:id="inputPassword" layoutX="55.0" layoutY="125.0" prefHeight="25.0" prefWidth="383.0" promptText="Contraseña..." />
       <Label layoutX="55.0" layoutY="49.0" prefHeight="25.0" prefWidth="383.0" text="Escribe la contraseña:">
          <font>
