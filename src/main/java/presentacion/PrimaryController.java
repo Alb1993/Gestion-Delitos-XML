@@ -133,7 +133,8 @@ public class PrimaryController implements Initializable {
         
         /***
          * Listener que filtrará los datos en funcion del texto escrito.
-         */    
+         */
+    
         txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (!delitos.isEmpty()) {
                 String searchString = txtSearch.getText().toLowerCase();
@@ -180,10 +181,10 @@ public class PrimaryController implements Initializable {
      */
     void cargarDoc() throws JAXBException {
         if (radioXML.isSelected()) {
-            File archivo = crearArchivo();
+            File archivo = crearArchivo("xml");
             ImportarDatosLogic.generarXML(filteredData, archivo);
         } else if (radioCSV.isSelected()) {
-            File archivo = crearArchivo();
+            File archivo = crearArchivo("csv");
             ImportarDatosLogic.generarCSV(filteredData, archivo);
         } else {
             Notificaciones.mostrarError("Selecciona una opcion para importar");
@@ -216,13 +217,12 @@ public class PrimaryController implements Initializable {
      *
      * @return
      */
-    public static File crearArchivo() {
+    public static File crearArchivo(String extension) {
         Stage stage1 = new Stage();
         FileChooser filechooser1 = new FileChooser();
-        FileFilter imageFilter = new FileNameExtensionFilter("Archivo CSV", "csv");
-        filechooser1.setTitle("Crear Archivo CSV");
+        FileFilter imageFilter = new FileNameExtensionFilter("Archivo " + extension.toUpperCase(), extension);
+        filechooser1.setTitle("Crear Archivo " + extension.toUpperCase());
         File archivo = filechooser1.showSaveDialog(stage1);
-
         return archivo;
     }
 
