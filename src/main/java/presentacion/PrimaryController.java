@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -138,7 +139,16 @@ public class PrimaryController implements Initializable {
     @FXML
     void onClick_Search(ActionEvent event) throws JAXBException {
         String searchString = txtSearch.getText().toLowerCase();
-        delitos = ImportarDatosLogic.buscarDelitos(searchString, delitos);
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            ArrayList<Row> filteredData = (ArrayList<Row>) delitos.stream()
+                    .filter(data -> data.getTipusdelicte().contains(newValue))
+                    .collect(Collectors.toList());
+            listaObservabledelitos.clear();
+            listaObservabledelitos.setAll(filteredData);
+            tabladelitos.refresh();
+        });
+
+        //delitos = ImportarDatosLogic.buscarDelitos(searchString, delitos);
     }
 
     @FXML
@@ -146,7 +156,7 @@ public class PrimaryController implements Initializable {
         //if (!cifradoActivado()) {
         if (delitos.size() == 0) {
             Notificaciones.mostrarError("Debes importar el documento para exportar datos.");
-        }else{
+        } else {
             if (radioXML.isSelected()) {
                 File archivo = crearArchivo();
                 ImportarDatosLogic.generarXML(delitos, archivo);
@@ -157,7 +167,7 @@ public class PrimaryController implements Initializable {
                 Notificaciones.mostrarError("Selecciona una opcion para importar");
 
             }
-        
+
         }
         //} else {
         //}
