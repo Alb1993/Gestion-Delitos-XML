@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -51,6 +52,12 @@ public class PrimaryController implements Initializable {
     private Button btnSearch;
 
     @FXML
+    private RadioButton radioXML;
+
+    @FXML
+    private RadioButton radioCSV;
+
+    @FXML
     private Button btnExport;
 
     @FXML
@@ -70,6 +77,16 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private Button btnImport;
+
+    @FXML
+    void onClick_CSV(ActionEvent event) {
+        radioXML.setSelected(false);
+    }
+
+    @FXML
+    void onClick_XML(ActionEvent event) {
+        radioCSV.setSelected(false);
+    }
 
     @FXML
     void onClick_importar(ActionEvent event) {
@@ -125,30 +142,35 @@ public class PrimaryController implements Initializable {
     }
 
     @FXML
-    void exportarCSV(ActionEvent event) {
+    void exportarCSV(ActionEvent event) throws JAXBException {
         //if (!cifradoActivado()) {
+        if (radioXML.isSelected()) {
+            File archivo = crearArchivo();
+            ImportarDatosLogic.generarXML(delitos, archivo);
+        } else if (radioCSV.isSelected()) {
             File archivo = crearArchivo();
             ImportarDatosLogic.generarCSV(delitos, archivo);
+        }else{
+            Notificaciones.mostrarError("Selecciona una opcion para importar");
+        }
         //} else {
-            
         //}
     }
 
     @FXML
     void gen_Informe(ActionEvent event) {
-           
-           FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml")); 
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
-        } catch (IOException | IllegalStateException ex) {           
+        } catch (IOException | IllegalStateException ex) {
             System.out.println("fff");
         }
-        
-        InformesController  informesController = fxmlLoader.getController();
+
+        InformesController informesController = fxmlLoader.getController();
         informesController.setDelitos(delitos);
-        
-           
+
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setResizable(false);
