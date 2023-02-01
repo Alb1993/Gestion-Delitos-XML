@@ -144,14 +144,20 @@ public class PrimaryController implements Initializable {
     @FXML
     void exportarCSV(ActionEvent event) throws JAXBException {
         //if (!cifradoActivado()) {
-        if (radioXML.isSelected()) {
-            File archivo = crearArchivo();
-            ImportarDatosLogic.generarXML(delitos, archivo);
-        } else if (radioCSV.isSelected()) {
-            File archivo = crearArchivo();
-            ImportarDatosLogic.generarCSV(delitos, archivo);
+        if (delitos.size() == 0) {
+            Notificaciones.mostrarError("Debes importar el documento para exportar datos.");
         }else{
-            Notificaciones.mostrarError("Selecciona una opcion para importar");
+            if (radioXML.isSelected()) {
+                File archivo = crearArchivo();
+                ImportarDatosLogic.generarXML(delitos, archivo);
+            } else if (radioCSV.isSelected()) {
+                File archivo = crearArchivo();
+                ImportarDatosLogic.generarCSV(delitos, archivo);
+            } else {
+                Notificaciones.mostrarError("Selecciona una opcion para importar");
+
+            }
+        
         }
         //} else {
         //}
