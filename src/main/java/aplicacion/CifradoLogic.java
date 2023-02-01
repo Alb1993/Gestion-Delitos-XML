@@ -26,9 +26,25 @@ public class CifradoLogic {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             if (Character.isLowerCase(c)) {
-                text.setCharAt(i, (char) ('z' - (c - 'a') + contraseña));
+                char resultadoLower = (char) ('z' - (c - 'a') - contraseña);
+
+                if (resultadoLower < 'a') {
+                    resultadoLower = 'a';
+                } else if (resultadoLower > 'z') {
+                    resultadoLower = 'z';
+                }
+                
+                text.setCharAt(i, resultadoLower);
+
             } else if (Character.isUpperCase(c)) {
-                text.setCharAt(i, (char) ('Z' - (c - 'A') + contraseña));
+                char resultadoUpper = (char) ('Z' - (c - 'A') - contraseña);
+
+                if (resultadoUpper < 'A') {
+                    resultadoUpper = 'A';
+                } else if (resultadoUpper > 'Z') {
+                    resultadoUpper = 'Z';
+                }
+                text.setCharAt(i, resultadoUpper);
             }
         }
         return text;
