@@ -1,4 +1,4 @@
-package datos;
+package aplicacion;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,50 +7,43 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- *
+ * @version 1.0
  * @author FPShare
+ * 
+ * Clase para almacenar las funciones de cifrado y descifrado de la aplicación
  */
-public class CifradoDAO {
+public class CifradoLogic {
 
     /**
-     * Función para cifrar el informe en modo espejo
+     * Función para cifrar el documento en modo espejo
      *
      * @param text
+     * @param contraseña
      * @return
      */
-    public static String cifrarInforme(String text) {
+    public static String cifrarInforme(StringBuilder text, int contraseña) {
 
         // Creamos un array con los caracteres
-        char[] chars = text.toCharArray();
+        char[] chars = text.toString().toCharArray();
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
             if (Character.isLowerCase(c)) {
-                chars[i] = (char) ('z' - (c - 'a'));
+                chars[i] = (char) ('z' - (c - 'a') - contraseña);
             } else if (Character.isUpperCase(c)) {
-                chars[i] = (char) ('Z' - (c - 'A'));
+                chars[i] = (char) ('Z' - (c - 'A') - contraseña);
             }
         }
         return new String(chars);
     }
 
     /**
-     * Función para descifrar utilizando la misma función de cifrar para
-     * revertir el cifrado
-     *
-     * @param text
-     * @return
-     */
-    public static String descifrarInforme(String text) {
-        return cifrarInforme(text);
-    }
-
-    /**
      * Función para pasar un archivo a String para luego cifrar
      *
      * @param fileName
+     * @param contraseña
      * @return
      */
-    public static String fileToString(String fileName) {
+    public static String fileToString(String fileName, int contraseña) {
         StringBuilder content = new StringBuilder();
         File file = new File(fileName);
         try (Scanner scanner = new Scanner(file)) {
@@ -62,7 +55,7 @@ public class CifradoDAO {
 
         }
 
-        return cifrarInforme(content.toString());
+        return cifrarInforme(content, contraseña);
     }
 
     /**
@@ -71,9 +64,10 @@ public class CifradoDAO {
      *
      * @param content
      * @param fileName
+     * @param extension
      */
-    public static void stringToFile(String content, String fileName) {
-        try (FileWriter writer = new FileWriter(new File(fileName))) {
+    public static void stringToFile(String content, String fileName, String extension) {
+        try (FileWriter writer = new FileWriter(new File(fileName + extension))) {
             writer.write(content);
         } catch (IOException e) {
 

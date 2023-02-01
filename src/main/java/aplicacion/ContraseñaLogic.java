@@ -1,4 +1,4 @@
-package datos;
+package aplicacion;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @author FPShare
  * 
- * Clase para almacenar las funcionalidades de escritura de contraseña
+ * Clase para almacenar las funcionalidades de comprobación de contraseña
  */
-public class ContraseñaDAO {
+public class ContraseñaLogic {
 
     /**
      * Función para detectar si la contraseña introducida cumple con los
