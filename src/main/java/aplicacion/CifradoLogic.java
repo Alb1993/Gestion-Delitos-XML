@@ -43,7 +43,9 @@ public class CifradoLogic {
      * @param contraseña
      * @return
      */
-    public static String fileToString(String fileName, int contraseña) {
+    public static String fileToString(String fileName, String contraseña) {
+        int contraseñaLong = contraseña.length();
+        
         StringBuilder content = new StringBuilder();
         File file = new File(fileName);
         try (Scanner scanner = new Scanner(file)) {
@@ -55,7 +57,7 @@ public class CifradoLogic {
 
         }
 
-        return cifrarInforme(content, contraseña);
+        return cifrarInforme(content, contraseñaLong);
     }
 
     /**
