@@ -5,6 +5,7 @@
 package presentacion;
 
 import aplicacion.ImportarDatosLogic;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,6 +25,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,6 +38,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.bind.JAXBException;
@@ -50,9 +54,13 @@ public class PrimaryController implements Initializable {
 
     private ImportarDatosLogic idl;
 
+    private MenuItem itemDefault,itemCodiSentencia,itemComisionHechos,itemArticuloPenal,itemTipoDelito,itemGrupoDelito,itemSexo,itemComunidadAutonoma;
+    
     private ArrayList<Row> delitos;
 
     private ArrayList<Row> filteredData;
+
+    private MenuItem item; 
 
     @FXML
     private Button btnSearch;
@@ -67,16 +75,19 @@ public class PrimaryController implements Initializable {
     private Button btnExport;
 
     @FXML
-    private TableView tabladelitos;
+    private TableView<Row> tabladelitos;
 
     @FXML
-    private TableColumn codigosentencia, comisionhechos, articulopenal, tipodlito, grupodelito, sexo, comunidadautonoma;
+    private TableColumn<Row, String> codigosentencia, comisionhechos, articulopenal, tipodlito, grupodelito, sexo, comunidadautonoma;
 
     @FXML
     private ToggleButton btnSwitch;
 
     @FXML
     private TextField txtSearch;
+
+    @FXML
+    private MenuButton orderMenu;
 
     @FXML
     private Button btnDoc;
@@ -130,12 +141,22 @@ public class PrimaryController implements Initializable {
         grupodelito.setCellValueFactory(new PropertyValueFactory<>("Grupdelicte"));
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
-
+        itemDefault = new MenuItem("Default");
+        itemCodiSentencia = new MenuItem("Codigo Sentencia");
+        itemComisionHechos = new MenuItem("Comision Hechos");
+        itemArticuloPenal = new MenuItem("Articulo Penal");
+        itemTipoDelito = new MenuItem("Tipo Delito");
+        itemGrupoDelito = new MenuItem("Grupo Delito");
+        itemSexo = new MenuItem("Sexo");
+        itemComunidadAutonoma = new MenuItem("Comunidad Autonoma");
+        orderMenu.getItems().addAll(itemDefault,itemCodiSentencia,itemComisionHechos,itemArticuloPenal,itemTipoDelito,itemGrupoDelito,itemSexo,itemComunidadAutonoma);
+        
         /**
          * *
          * Listener que filtrará los datos en funcion del texto escrito.
          */
-        txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event
+                -> {
             if (!delitos.isEmpty()) {
                 String searchString = txtSearch.getText().toLowerCase();
 
@@ -148,7 +169,9 @@ public class PrimaryController implements Initializable {
                     tabladelitos.refresh();
                 });
             }
-        });
+        }
+        );
+
     }
 
     /**
@@ -192,6 +215,14 @@ public class PrimaryController implements Initializable {
         }
     }
 
+    /**
+     * *
+     * Funcion que generará tres informes exportables si un Array de delitos ha
+     * sido importado previamente.
+     *
+     * @param event
+     * @throws presentacion.PrimaryController.DelitoException
+     */
     @FXML
     void gen_Informe(ActionEvent event) throws DelitoException {
         if (delitos.isEmpty()) {
@@ -210,13 +241,18 @@ public class PrimaryController implements Initializable {
 
             } catch (IOException | IllegalStateException ex) {
                 System.out.println("fff");
+
             }
 
         }
 
     }
 
-    public class DelitoException extends Exception{
+    /**
+     * *
+     * Excepcion personalizada de Delito.
+     */
+    public class DelitoException extends Exception {
 
         public DelitoException(String n) {
             Notificaciones.mostrarError(n);
@@ -252,5 +288,5 @@ public class PrimaryController implements Initializable {
 
         return cifradoActivado;
     }
-
+    
 }

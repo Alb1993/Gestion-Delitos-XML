@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -10,17 +11,17 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="1432.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.PrimaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="1432.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.PrimaryController">
    <children>
-       <TableView fx:id="tabladelitos" layoutX="55.0" layoutY="90.0" prefHeight="406.0" prefWidth="969.0">
+       <TableView fx:id="tabladelitos" layoutX="55.0" layoutY="90.0" prefHeight="558.0" prefWidth="969.0">
         <columns>
           <TableColumn fx:id="codigosentencia" prefWidth="130.0" text="Codigo sentencia" />
           <TableColumn fx:id="comisionhechos" minWidth="0.0" prefWidth="128.0" text="Comision hechos" />
             <TableColumn fx:id="articulopenal" prefWidth="113.0" text="Articulo penal" />
             <TableColumn fx:id="tipodlito" prefWidth="183.0" text="Tipo delito" />
-            <TableColumn fx:id="grupodelito" prefWidth="201.0" text="Grupo delito" />
-            <TableColumn fx:id="sexo" minWidth="0.0" prefWidth="44.0" text="Sexo" />
-            <TableColumn fx:id="comunidadautonoma" prefWidth="180.0" text="Comunidad atonoma" />
+            <TableColumn fx:id="grupodelito" prefWidth="137.0" text="Grupo delito" />
+            <TableColumn fx:id="sexo" minWidth="0.0" prefWidth="85.0" text="Sexo" />
+            <TableColumn fx:id="comunidadautonoma" prefWidth="187.0" text="Comunidad atonoma" />
         </columns>
       </TableView>
       <TextField fx:id="txtSearch" layoutX="55.0" layoutY="28.0" prefHeight="39.0" prefWidth="969.0" />
@@ -31,5 +32,12 @@
       <Button fx:id="btnExport" layoutX="1070.0" layoutY="251.0" mnemonicParsing="false" onAction="#exportarCSV" prefHeight="39.0" prefWidth="250.0" text="EXPORTAR" />
       <Button fx:id="btnImport" layoutX="1070.0" layoutY="109.0" mnemonicParsing="false" onAction="#onClick_importar" prefHeight="39.0" prefWidth="250.0" text="IMPORTAR" />
       <ToggleButton fx:id="btnSwitch" layoutX="1070.0" layoutY="413.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Switch" />
+      <MenuButton fx:id="orderMenu" layoutX="1078.0" layoutY="524.0" mnemonicParsing="false" text="MenuButton">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </MenuButton>
+      <Text layoutX="1078.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordenar por:" wrappingWidth="137.205078125" />
    </children>
 </AnchorPane>

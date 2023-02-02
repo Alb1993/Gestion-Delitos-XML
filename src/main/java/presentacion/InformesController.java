@@ -144,27 +144,9 @@ public class InformesController implements Initializable {
 
     public void setDelitos(ArrayList<Row> delitos) {
         this.delitos.addAll(delitos);
-        
-
-        //if (!this.delitos.isEmpty()) {
             cargarInforme1();
             cargarInforme2();
             cargarInforme3();
-        /*}else{
-             Notificaciones.mostrarError("No se ha podido recuperar los datos de  los delitos");
-             String error = "No se ha podido recuperar los datos de  los delitos";
-             descripcioninforme1.setText(error);
-             descripcioninforme2.setText(error);
-             descripcioninforme3.setText(error);
-             
-             exportarinforme2.setDisable(true);
-             exportarinforme1.setDisable(true);
-             exportarinforme3.setDisable(true);
-
-             
-        }
-*/
-
     }
 
     private void cargarInforme1() {
