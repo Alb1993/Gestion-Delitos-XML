@@ -268,8 +268,9 @@ public class PrimaryController implements Initializable {
        FXMLLoader loader = new FXMLLoader(getClass().getResource("ordenar.fxml"));
        
        Stage stage = new Stage();
-       stage.setScene(new Scene(loader.load()));
-       
+       Scene scene = new Scene(loader.load());
+       scene.getStylesheets().add("stylesheet/application.css");
+       stage.setScene(scene);
        OrdenarController controller = loader.getController();
        if(filteredData == null){
            filteredData=delitos;
