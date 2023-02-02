@@ -1,7 +1,10 @@
 package aplicacion;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,7 +18,9 @@ import java.util.Scanner;
 public class CifradoLogic {
 
     /**
-     * Función para cifrar el documento en modo espejo
+     * Función para cifrar el documento en modo espejo (estas funciones no nos
+     * funcionan, hemos tenido que utilizar al final el cifrado cesar para que
+     * por lo menos tengamos un cifrado)
      *
      * @param text
      * @param contraseña
@@ -33,7 +38,7 @@ public class CifradoLogic {
                 } else if (resultadoLower > 'z') {
                     resultadoLower = 'z';
                 }
-                
+
                 text.setCharAt(i, resultadoLower);
 
             } else if (Character.isUpperCase(c)) {
@@ -98,6 +103,60 @@ public class CifradoLogic {
             writer.write(content.toString());
         } catch (IOException e) {
 
+        }
+    }
+
+    /**
+     * Función de cifrado con el metodo cesar
+     * 
+     * @param contraseña
+     * @param inputFile
+     * @param outputFile 
+     */
+    public static void cifrado(String contraseña, String inputFile, String outputFile) {
+
+        int contraseñaInt = contraseña.length();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+            int c;
+            while ((c = reader.read()) != -1) {
+                char ch = (char) c;
+                char encrypted = (char) (ch + contraseñaInt);
+                writer.write(encrypted);
+            }
+            reader.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Funcion de descifrado con el metodo cesar
+     * 
+     * @param contraseña
+     * @param inputFile
+     * @param outputFile 
+     */
+    public static void descifrado(String contraseña, String inputFile, String outputFile) {
+
+        int contraseñaInt = contraseña.length();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+            int c;
+            while ((c = reader.read()) != -1) {
+                char ch = (char) c;
+                char decrypted = (char) (ch - contraseñaInt);
+                writer.write(decrypted);
+            }
+            reader.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
