@@ -6,6 +6,7 @@ package presentacion;
 
 import aplicacion.ImportarDatosLogic;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -130,11 +131,10 @@ public class PrimaryController implements Initializable {
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
 
-        
-        /***
+        /**
+         * *
          * Listener que filtrará los datos en funcion del texto escrito.
          */
-    
         txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (!delitos.isEmpty()) {
                 String searchString = txtSearch.getText().toLowerCase();
@@ -148,7 +148,7 @@ public class PrimaryController implements Initializable {
                     tabladelitos.refresh();
                 });
             }
-        });           
+        });
     }
 
     /**
@@ -164,8 +164,8 @@ public class PrimaryController implements Initializable {
         if (delitos.isEmpty()) {
             Notificaciones.mostrarError("Debes importar el documento para exportar datos.");
         } else {
-            if (filteredData.isEmpty()) {
-                filteredData.addAll(delitos);
+            if (this.filteredData == null) {
+                this.filteredData = delitos;
                 cargarDoc();
             } else {
                 cargarDoc();
@@ -186,29 +186,41 @@ public class PrimaryController implements Initializable {
         } else if (radioCSV.isSelected()) {
             File archivo = crearArchivo("csv");
             ImportarDatosLogic.generarCSV(filteredData, archivo);
+
         } else {
             Notificaciones.mostrarError("Selecciona una opcion para importar");
         }
     }
 
     @FXML
-    void gen_Informe(ActionEvent event) {
+    void gen_Informe(ActionEvent event) throws DelitoException {
+        if (delitos.isEmpty()) {
+            throw new DelitoException("Importa los delitos antes de generar el informe.");
+        } else {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml"));
+                Parent root = null;
+                root = fxmlLoader.load();
+                InformesController informesController = fxmlLoader.getController();
+                informesController.setDelitos(delitos);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
+                stage.show();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml"));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException | IllegalStateException ex) {
-            System.out.println("fff");
+            } catch (IOException | IllegalStateException ex) {
+                System.out.println("fff");
+            }
+
         }
 
-        InformesController informesController = fxmlLoader.getController();
-        informesController.setDelitos(delitos);
+    }
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
+    public class DelitoException extends Exception{
+
+        public DelitoException(String n) {
+            Notificaciones.mostrarError(n);
+        }
     }
 
     /**
@@ -220,10 +232,14 @@ public class PrimaryController implements Initializable {
     public static File crearArchivo(String extension) {
         Stage stage1 = new Stage();
         FileChooser filechooser1 = new FileChooser();
-        FileFilter imageFilter = new FileNameExtensionFilter("Archivo " + extension.toUpperCase(), extension);
-        filechooser1.setTitle("Crear Archivo " + extension.toUpperCase());
-        File archivo = filechooser1.showSaveDialog(stage1);
-        return archivo;
+        try {
+            FileFilter imageFilter = new FileNameExtensionFilter("Archivo " + extension.toUpperCase(), extension);
+            filechooser1.setTitle("Crear Archivo " + extension.toUpperCase());
+            File archivo = filechooser1.showSaveDialog(stage1);
+            return archivo;
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public boolean cifradoActivado() {

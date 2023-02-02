@@ -144,11 +144,13 @@ public class InformesController implements Initializable {
 
     public void setDelitos(ArrayList<Row> delitos) {
         this.delitos.addAll(delitos);
-        if (!this.delitos.isEmpty()) {
+        
+
+        //if (!this.delitos.isEmpty()) {
             cargarInforme1();
             cargarInforme2();
             cargarInforme3();
-        }else{
+        /*}else{
              Notificaciones.mostrarError("No se ha podido recuperar los datos de  los delitos");
              String error = "No se ha podido recuperar los datos de  los delitos";
              descripcioninforme1.setText(error);
@@ -161,6 +163,7 @@ public class InformesController implements Initializable {
 
              
         }
+*/
 
     }
 
