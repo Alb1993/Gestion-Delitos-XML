@@ -52,17 +52,16 @@ import modelo.Row;
 public class PrimaryController implements Initializable {
 
     private ObservableList<Row> listaObservabledelitos;
-
+    
     private ImportarDatosLogic idl;
-
-    private MenuItem itemDefault, itemCodiSentencia, itemComisionHechos, itemArticuloPenal, itemTipoDelito, itemGrupoDelito, itemSexo, itemComunidadAutonoma;
 
     private ArrayList<Row> delitos;
 
-    private ArrayList<Row> filteredData;
+    private static ArrayList<Row> filteredData;
 
-    private MenuItem item;
-
+    @FXML
+    private Button btnOrdenar;
+    
     @FXML
     private Button btnSearch;
 
@@ -96,11 +95,24 @@ public class PrimaryController implements Initializable {
     @FXML
     private Button btnImport;
 
+    public void setData(ArrayList<Row> delitos){
+    this.filteredData=delitos;
+    }
+    
+    /***
+     * Accion realizada al pulsar RadioCSV.
+     * @param event 
+     */
     @FXML
     void onClick_CSV(ActionEvent event) {
         radioXML.setSelected(false);
     }
 
+    /***
+     * Accion realizada al pulsar RadioXML
+     * @param event 
+     */
+    
     @FXML
     void onClick_XML(ActionEvent event) {
         radioCSV.setSelected(false);
@@ -143,8 +155,10 @@ public class PrimaryController implements Initializable {
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
         
-        /**
-         * *
+        
+        
+        
+        /***
          * Listener que filtrará los datos en funcion del texto escrito.
          */
         txtSearch.addEventFilter(KeyEvent.KEY_PRESSED, event
@@ -206,6 +220,12 @@ public class PrimaryController implements Initializable {
         }
     }
 
+    public static void setDatosOrdenados(ArrayList<Row> delitos) {
+        filteredData=delitos;
+    }
+    
+    
+    
     /**
      * *
      * Funcion que generará tres informes exportables si un Array de delitos ha
@@ -235,6 +255,30 @@ public class PrimaryController implements Initializable {
 
             }
         }
+
+    }
+    
+    /***
+     * Accion que cargará OrdenarController y le pasara los delitos para ordenarlos.
+     * @param event
+     * @throws IOException 
+     */
+    @FXML
+    void onClick_Ordenar(ActionEvent event) throws IOException {
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("ordenar.fxml"));
+       
+       Stage stage = new Stage();
+       stage.setScene(new Scene(loader.load()));
+       
+       OrdenarController controller = loader.getController();
+       if(filteredData == null){
+           filteredData=delitos;
+            controller.setData(filteredData);
+            stage.show();
+       }else{
+            controller.setData(filteredData);
+            stage.show();
+       }
 
     }
     
