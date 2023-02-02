@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -54,13 +55,13 @@ public class PrimaryController implements Initializable {
 
     private ImportarDatosLogic idl;
 
-    private MenuItem itemDefault,itemCodiSentencia,itemComisionHechos,itemArticuloPenal,itemTipoDelito,itemGrupoDelito,itemSexo,itemComunidadAutonoma;
-    
+    private MenuItem itemDefault, itemCodiSentencia, itemComisionHechos, itemArticuloPenal, itemTipoDelito, itemGrupoDelito, itemSexo, itemComunidadAutonoma;
+
     private ArrayList<Row> delitos;
 
     private ArrayList<Row> filteredData;
 
-    private MenuItem item; 
+    private MenuItem item;
 
     @FXML
     private Button btnSearch;
@@ -141,15 +142,6 @@ public class PrimaryController implements Initializable {
         grupodelito.setCellValueFactory(new PropertyValueFactory<>("Grupdelicte"));
         sexo.setCellValueFactory(new PropertyValueFactory<>("Sexe"));
         comunidadautonoma.setCellValueFactory(new PropertyValueFactory<>("Comunitatautonoma"));
-        itemDefault = new MenuItem("Default");
-        itemCodiSentencia = new MenuItem("Codigo Sentencia");
-        itemComisionHechos = new MenuItem("Comision Hechos");
-        itemArticuloPenal = new MenuItem("Articulo Penal");
-        itemTipoDelito = new MenuItem("Tipo Delito");
-        itemGrupoDelito = new MenuItem("Grupo Delito");
-        itemSexo = new MenuItem("Sexo");
-        itemComunidadAutonoma = new MenuItem("Comunidad Autonoma");
-        orderMenu.getItems().addAll(itemDefault,itemCodiSentencia,itemComisionHechos,itemArticuloPenal,itemTipoDelito,itemGrupoDelito,itemSexo,itemComunidadAutonoma);
         
         /**
          * *
@@ -196,9 +188,8 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    /**
-     * *
-     * Funcion para cargar Documento XML o CSV
+    /***
+     * Funcion para Exportar el ArrayList Delitos en un Documento XML o CSV.
      *
      * @throws JAXBException
      */
@@ -224,9 +215,9 @@ public class PrimaryController implements Initializable {
      * @throws presentacion.PrimaryController.DelitoException
      */
     @FXML
-    void gen_Informe(ActionEvent event) throws DelitoException {
+    void gen_Informe(ActionEvent event) {
         if (delitos.isEmpty()) {
-            throw new DelitoException("Importa los delitos antes de generar el informe.");
+            Notificaciones.mostrarError("Importa los delitos antes de generar el informe.");
         } else {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("informes.fxml"));
@@ -243,24 +234,11 @@ public class PrimaryController implements Initializable {
                 System.out.println("fff");
 
             }
-
         }
 
     }
-
-    /**
-     * *
-     * Excepcion personalizada de Delito.
-     */
-    public class DelitoException extends Exception {
-
-        public DelitoException(String n) {
-            Notificaciones.mostrarError(n);
-        }
-    }
-
-    /**
-     * *
+    
+    /***
      * Funcion que devuelve un objeto File a traves de un FileChooser.
      *
      * @return
@@ -288,5 +266,5 @@ public class PrimaryController implements Initializable {
 
         return cifradoActivado;
     }
-    
+
 }
