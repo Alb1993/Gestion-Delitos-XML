@@ -27,7 +27,9 @@ import presentacion.Notificaciones;
  * @author andre
  */
 public class DelitosDAO {
-
+    /*
+        Función con la que importamos los datos del XML y lo umportamos a las clase Response
+    */
     public static ArrayList<Row> importarDatos() throws JAXBException {
         File file = new File(App.class.getResource("/xml/delitos.xml").getFile());
         //creamos una nueva instancia JAXBContext para la clase Response que representa la estructira del archivo XML

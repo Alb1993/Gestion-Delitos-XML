@@ -26,7 +26,7 @@ public class ImportarDatosLogic {
     
     /***
      * Funcion que devolverá un ArrayList de delitos.
-     * @return 
+     * @return delitos
      */
      public ArrayList<Row> getDelitos() {
         return this.delitos;
